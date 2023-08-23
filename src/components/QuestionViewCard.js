@@ -1,4 +1,4 @@
-import ShareIcon from "@/icons/share";
+import CopyIcon from "@/icons/copy";
 import TrashIcon from "@/icons/trash";
 import React from "react";
 import Button from "./atoms/Button";
@@ -8,15 +8,12 @@ function QuestionViewCard({ text }) {
   const handleShare = async () => {
     const element = document.getElementById('card'),
     canvas = await html2canvas(element),
-    data = canvas.toDataURL('image/jpg'),
-    link = document.createElement('a');
+    data = canvas.toDataURL('image/png');
 
-    link.href = data;
-    link.download = 'downloaded-image.jpg';
+    const response = await fetch(data)
+    const blob = await response.blob()
 
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    navigator.clipboard.write([new ClipboardItem({ 'image/png': blob})])
   }
 
   return (
@@ -33,7 +30,7 @@ function QuestionViewCard({ text }) {
       </div>
       <div className="mt-4 flex flex-row justify-between items-center">
         <Button additionalClasses="gap-2 active:scale-90 duration-300" onClick={() => handleShare()}>
-          Share <ShareIcon className="w-4" />
+          Copy image <CopyIcon className="w-4" />
         </Button>
         <Button additionalClasses="gap-2 active:scale-90 duration-300">
           Delete <TrashIcon className="w-4" />
