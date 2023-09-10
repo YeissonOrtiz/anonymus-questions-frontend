@@ -21,12 +21,12 @@ export default function Dashboard({ params: { id } }) {
   const [questions, setQuestions] = useState([])
 
   const copyURLtoClipboard = () => {
-    navigator.clipboard.writeText(`http://localhost:3000/${id}/create`)
+    navigator.clipboard.writeText(`${process.env.DOMAIN}/${id}/create`)
   }
 
   useEffect(() => {
     if (status === "authenticated" && id === user?._id ) {
-      axios.get(`http://localhost:3001/api/${id}/get-questions`)
+      axios.get(`${process.env.API_URL}/${id}/get-questions`)
       .then(res => setQuestions(res?.data))
     } else if (user._id) {
       push(`/${user._id}/dashboard`)
