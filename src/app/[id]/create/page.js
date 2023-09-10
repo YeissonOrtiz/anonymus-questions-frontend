@@ -1,8 +1,8 @@
 import React from 'react'
 import { QuestionFormCard } from "@/components/QuestionFormCard";
 
-export default function CreateQuestion() {
+export default function CreateQuestion({params: {id}}) {
   return (
-    <QuestionFormCard/>
+    <QuestionFormCard owner_id={id}/>
   )
 }

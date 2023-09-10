@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
 import React, { useState } from "react";
-import { useLocalStorage } from "@/services/localStorage";
 import Button from "./atoms/Button";
+import axios from "axios";
 
 const SubmitDone = () => (
   <div>
@@ -10,13 +10,14 @@ const SubmitDone = () => (
   </div>
 );
 
-function QuestionFormCard() {
-  const [questionContentSubmitted, setQuestionContentSubmitted] = useLocalStorage("QuestionContentSubmitted", "");
-  const [question, setQuestion] = useState("");
+function QuestionFormCard({owner_id}) {
+  const [question, setQuestion] = useState({});
   const [questionSubmitted, setQuestionSubmitted] = useState(false);
 
   const handleSubmit = () => {
-    setQuestionContentSubmitted(question);
+    const questionToSend = {question: question, owner_id: owner_id};
+    axios.post('http://localhost:3001/api/create-question', questionToSend)
+      .then((res) => console.info(res?.data))
     setQuestionSubmitted(true);
   };
 

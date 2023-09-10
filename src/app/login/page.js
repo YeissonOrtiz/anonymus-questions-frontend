@@ -1,34 +1,24 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useSession } from "next-auth/react";
+import React, { useEffect } from 'react'
+import { useLocalStorage } from "@/services/localStorage";
+import { useRouter } from 'next/navigation'
 
-export default function Login () {
-  const [isClient, setIsClient] = useState(false)
+export default function Login() {
+  const { push } = useRouter();
+  const [user, setUser] = useLocalStorage('user')
+  const {data: session, status} = useSession()
 
   useEffect(() => {
-    setIsClient(true)
-  }, [])
+    if (status === "authenticated" && session?.user) {
+      push(`/${user?._id}/dashboard`)
+    }
+  }, [session?.user])
 
   return (
-    <section className='flex flex-col gap-5'>
+    <section className="flex flex-col gap-5">
       <h1 className="text-white text-4xl">Welcome! Tell Me Everything</h1>
-      {isClient ? <article className='w-full flex justify-center items-center'><div id="g_id_onload"
-        data-client_id="317582431650-houndojl074njmqukma1nd0alnc9ev66.apps.googleusercontent.com"
-        data-context="signup"
-        data-ux_mode="popup"
-        data-login_uri="/login"
-        data-auto_prompt="false">
-      </div>
-
-      <div class="g_id_signin"
-        data-type="standard"
-        data-shape="pill"
-        data-theme="outline"
-        data-text="signin_with"
-        data-size="large"
-        data-logo_alignment="left">
-      </div>
-      <script src="https://accounts.google.com/gsi/client" async></script></article> : ''}
     </section>
-  )
+  );
 }
