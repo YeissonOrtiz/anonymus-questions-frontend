@@ -16,7 +16,7 @@ function QuestionFormCard({owner_id}) {
 
   const handleSubmit = () => {
     const questionToSend = {question: question, owner_id: owner_id};
-    axios.post(`${process.env.API_URL}/create-question`, questionToSend)
+    axios.post(`${process.env.API_URL || process.env.NEXT_PUBLIC_API_URL}/create-question`, questionToSend)
       .then((res) => console.info(res?.data))
     setQuestionSubmitted(true);
   };

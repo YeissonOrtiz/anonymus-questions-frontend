@@ -3,25 +3,25 @@
 import { useState, useEffect } from "react";
 
 const useLocalStorage = (key, defaultValue) => {
+  const [value, setValue] = useState(() => {
+    let currentValue;
+
+    try {
+      currentValue = JSON.parse(
+        localStorage.getItem(key) || String(defaultValue)
+      );
+    } catch (error) {
+      currentValue = defaultValue;
+    }
+
+    return currentValue;
+  });
+
   useEffect(() => {
-    const localStorageValue = JSON.parse(localStorage.getItem(key)) || defaultValue;
+    localStorage.setItem(key, JSON.stringify(value));
+  }, [value, key]);
 
-    const setLocalStorageStateValue = (valueOrFn) => {
-      let newValue;
-      if (typeof valueOrFn === 'function') {
-        const fn = valueOrFn;
-        newValue = fn(localStorageValue);
-      } else {
-        newValue = valueOrFn;
-      }
-      localStorage.setItem(key, JSON.stringify(newValue));
-    };
-
-    setLocalStorageStateValue(defaultValue);
-  }, [key, defaultValue]); // Include key and defaultValue in the dependency array
-
-  // Return the localStorage value and setter function
-  return [localStorageValue, setLocalStorageStateValue];
+  return [value, setValue];
 };
 
-export { useLocalStorage };
+export { useLocalStorage }

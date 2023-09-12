@@ -22,7 +22,7 @@ function QuestionViewCard({ text, button_without_text, id }) {
   };
 
   const handleDelete = async (id) => {
-    axios.delete(`${process.env.API_URL}/delete-question/${id}`)
+    axios.delete(`${process.env.API_URL || process.env.NEXT_PUBLIC_API_URL}/delete-question/${id}`)
     .then(setDeteled(true))
   }
 

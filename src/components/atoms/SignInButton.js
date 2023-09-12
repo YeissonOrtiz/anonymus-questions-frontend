@@ -32,7 +32,8 @@ function SignInButton({...attrs}) {
 
   useEffect(() => {
     if ((user?.logged && !apiCallIsDone)) {
-      axios.post(`${process.env.API_URL}/login/`, {
+      console.log(process.env.API_URL || process.env.NEXT_PUBLIC_API_URL)
+      axios.post(`${process.env.API_URL || process.env.NEXT_PUBLIC_API_URL}/login`, {
         email: session?.user.email
       })
       .then((res) => saveUserData(res?.data))
